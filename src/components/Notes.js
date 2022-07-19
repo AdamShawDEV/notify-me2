@@ -1,22 +1,22 @@
 import styles from './modules/Notes.module.css';
 import Note from './Note';
 import { useRequestData, REQUEST_STATUS } from './hooks/useRequestData'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Modal from './Modal';
+import { NoteFilterContext } from './hooks/NoteFilterContext';
 
 function generateId(numChars) {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMONPQRSTUVWXYZ1234567890';
     let output = '';
-    
-    for (let i = 0; i < numChars; i++)
-    {
+
+    for (let i = 0; i < numChars; i++) {
         output += chars.charAt(Math.floor(Math.random() * chars.length));
     }
 
     return output;
 }
 
-function NewNoteButton( { addRecord } ) {
+function NewNoteButton({ addRecord }) {
     const [title, setTitle] = useState('');
     const [contents, setContents] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,14 +44,18 @@ function NewNoteButton( { addRecord } ) {
                 isOpen={isModalOpen}
                 handleClose={() => setIsModalOpen(false)}
                 heading='Add New Note'>
-                <form onSubmit={e => handleSubmit(e)} >
+                <form className={styles.newNoteForm}
+                    onSubmit={e => handleSubmit(e)} >
                     <label>Title:</label>
-                    <input type="text"
+                    <input className={styles.noteTitleInput}
+                    type="text"
                         onChange={e => setTitle(e.target.value)}
                         value={title}
                         required />
                     <label>Contents:</label>
-                    <textarea onChange={e => setContents(e.target.value)}
+                    <textarea
+                        className={styles.noteContentsInput}
+                        onChange={e => setContents(e.target.value)}
                         value={contents}
                         required />
                     <input type="submit" value="Submit" />
@@ -69,11 +73,16 @@ function Loading() {
 
 function Notes() {
     const { data, requestStatus, addRecord } = useRequestData();
+    const { noteFilter } = useContext(NoteFilterContext);
 
     return (
         <main className={styles.notesContainer} >
-            {requestStatus === REQUEST_STATUS.SUCCESS? 
-                data.map((noteData) => <Note key={noteData.id} note={noteData} />):
+            {requestStatus === REQUEST_STATUS.SUCCESS ?
+                data.filter((noteData) => {
+                    return noteData.title.includes(noteFilter) ||
+                        noteData.contents.includes(noteFilter);
+                })
+                    .map((noteData) => <Note key={noteData.id} note={noteData} />) :
                 <Loading />}
             <NewNoteButton addRecord={addRecord} />
         </main>
