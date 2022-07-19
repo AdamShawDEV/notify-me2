@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(104, 99, 254);
+    border-bottom: 1px solid rgb(0, 0, 101);
+}
+
+.userContainer {
+    display: flex;
+    align-items: center;
+    margin-right: .4rem;
+}
+
+.userName {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-right: .4rem;
+}
+
+.user {
+    border-radius: 50%;
+}

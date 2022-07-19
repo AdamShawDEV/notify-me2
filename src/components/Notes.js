@@ -1,0 +1,83 @@
+import styles from './modules/Notes.module.css';
+import Note from './Note';
+import { useRequestData, REQUEST_STATUS } from './hooks/useRequestData'
+import { useState } from 'react';
+import Modal from './Modal';
+
+function generateId(numChars) {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMONPQRSTUVWXYZ1234567890';
+    let output = '';
+    
+    for (let i = 0; i < numChars; i++)
+    {
+        output += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    return output;
+}
+
+function NewNoteButton( { addRecord } ) {
+    const [title, setTitle] = useState('');
+    const [contents, setContents] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        const newRec = {
+            id: generateId(16),
+            title,
+            contents,
+        };
+
+        addRecord(newRec);
+        setTitle('');
+        setContents('');
+        setIsModalOpen(false);
+    }
+
+    return (
+        <>
+            <button className={styles.addNewButton}
+                onClick={() => setIsModalOpen(true)}>add new</button>
+            <Modal
+                isOpen={isModalOpen}
+                handleClose={() => setIsModalOpen(false)}
+                heading='Add New Note'>
+                <form onSubmit={e => handleSubmit(e)} >
+                    <label>Title:</label>
+                    <input type="text"
+                        onChange={e => setTitle(e.target.value)}
+                        value={title}
+                        required />
+                    <label>Contents:</label>
+                    <textarea onChange={e => setContents(e.target.value)}
+                        value={contents}
+                        required />
+                    <input type="submit" value="Submit" />
+                </form>
+            </Modal>
+        </>
+    );
+}
+
+function Loading() {
+    return (
+        <div className={styles.loading} >Loading...</div>
+    );
+}
+
+function Notes() {
+    const { data, requestStatus, addRecord } = useRequestData();
+
+    return (
+        <main className={styles.notesContainer} >
+            {requestStatus === REQUEST_STATUS.SUCCESS? 
+                data.map((noteData) => <Note key={noteData.id} note={noteData} />):
+                <Loading />}
+            <NewNoteButton addRecord={addRecord} />
+        </main>
+    );
+}
+
+export default Notes;
