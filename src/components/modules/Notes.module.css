@@ -9,18 +9,18 @@
 }
 
 .addNewButton {
+    color: rgb(205, 205, 255);
+    font-size: 4rem;
     background-color: rgb(124, 124, 246);
     padding: .4rem;
     border-radius: .5rem;
     border: 1px solid darkblue;
     text-align: center;
-    height: 8rem;
-    color: rgb(205, 205, 255);
-    font-size: 5rem;
+    height: 14.9rem;
 }
 
 .addNewButton:hover {
-    background-color: rgb(153, 153, 250);;
+    background-color: rgb(153, 153, 250);
 }
 
 .loading {
@@ -37,14 +37,55 @@
     flex-direction: column;
 }
 
+.noteTitleInput {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
 .noteContentsInput {
     resize: none;
     height: 10rem;
+    font-size: 1rem;
 }
 
-.noteTitleInput, .noteContentsInput {
+.noteTitleInput,
+.noteContentsInput {
     background-color: rgb(174, 173, 255);
     border: none;
     border-radius: 0.4rem;
     padding: 0 .4rem;
+}
+
+.formButtons {
+    width: 5rem;
+    height: 2rem;
+    background-color: rgb(174, 173, 255);
+    border: none;
+    border-radius: .4rem;
+    color: rgb(60, 49, 255);
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+.formButtons:hover {
+    background-color: rgb(153, 153, 250);
+}
+
+.formButtonBox {
+    display: flex;
+    justify-content: space-around;
+    margin-top: .4rem;
+}
+
+@media screen and (min-width: 600px) {
+    .notesContainer {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: flex-start;
+    }
+
+    .addNewButton {
+        width: 18.9rem;
+    }
 }

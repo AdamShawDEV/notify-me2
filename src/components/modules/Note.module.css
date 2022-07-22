@@ -4,6 +4,8 @@
     border-radius: .5rem;
     border: 1px solid darkblue;
     text-align: center;
+    height: 14rem;
+    word-wrap: break-word;
 }
 
 .title {
@@ -14,7 +16,6 @@
 .contents {
     background-color: rgb(174, 173, 255);
     height: 10rem;
-
 }
 
 .buttonBox {
@@ -32,4 +33,38 @@
     color: rgb(60, 49, 255);
     font-weight: 500;
     font-size: 1.2rem;
+}
+
+.button:hover {
+    background-color: rgb(153, 153, 250);
+}
+
+.editNoteForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.noteTitleInput {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.noteContentsInput {
+    resize: none;
+    height: 10rem;
+    font-size: 1rem;
+}
+
+.noteTitleInput,
+.noteContentsInput {
+    background-color: rgb(174, 173, 255);
+    border: none;
+    border-radius: 0.4rem;
+    padding: 0 .4rem;
+}
+
+@media screen and (min-width: 600px) {
+    .noteContainer {
+        width: 18rem;
+    }
 }

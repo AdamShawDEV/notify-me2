@@ -31,6 +31,10 @@ function NewNoteButton({ addRecord }) {
         };
 
         addRecord(newRec);
+        handleClose();
+    }
+
+    function handleClose() {
         setTitle('');
         setContents('');
         setIsModalOpen(false);
@@ -42,13 +46,13 @@ function NewNoteButton({ addRecord }) {
                 onClick={() => setIsModalOpen(true)}>add new</button>
             <Modal
                 isOpen={isModalOpen}
-                handleClose={() => setIsModalOpen(false)}
+                handleClose={handleClose}
                 heading='Add New Note'>
                 <form className={styles.newNoteForm}
                     onSubmit={e => handleSubmit(e)} >
                     <label>Title:</label>
                     <input className={styles.noteTitleInput}
-                    type="text"
+                        type="text"
                         onChange={e => setTitle(e.target.value)}
                         value={title}
                         required />
@@ -58,7 +62,14 @@ function NewNoteButton({ addRecord }) {
                         onChange={e => setContents(e.target.value)}
                         value={contents}
                         required />
-                    <input type="submit" value="Submit" />
+                    <div className={styles.formButtonBox}>
+                        <input
+                            className={styles.formButtons}
+                            type="submit" value="Submit" />
+                        <button
+                            className={styles.formButtons}
+                            onClick={handleClose}>Cancel</button>
+                    </div>
                 </form>
             </Modal>
         </>
@@ -72,7 +83,7 @@ function Loading() {
 }
 
 function Notes() {
-    const { data, requestStatus, addRecord } = useRequestData();
+    const { data, requestStatus, addRecord, deleteRecord, updateRecord } = useRequestData();
     const { noteFilter } = useContext(NoteFilterContext);
 
     return (
@@ -82,7 +93,10 @@ function Notes() {
                     return noteData.title.includes(noteFilter) ||
                         noteData.contents.includes(noteFilter);
                 })
-                    .map((noteData) => <Note key={noteData.id} note={noteData} />) :
+                    .map((noteData) => <Note key={noteData.id}
+                        note={noteData}
+                        deleteRecord={deleteRecord}
+                        updateRecord={updateRecord} />) :
                 <Loading />}
             <NewNoteButton addRecord={addRecord} />
         </main>

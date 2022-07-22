@@ -10,7 +10,27 @@ const notesData = [
         id: 'fldshkdjsan4234',
         title: "Second Note",
         contents: "This is the contents of the second note.",
-    }
+    },
+    {
+        id: 'lenfk3l3ern4jn3',
+        title: "First Note",
+        contents: "This the the contents of the first note.",
+    },
+    {
+        id: 'fqreldshwrkdjsan4234',
+        title: "Second Note",
+        contents: "This is the contents of the second note.",
+    },
+    {
+        id: 'lenfk3lre3n4jn3',
+        title: "First Note",
+        contents: "This the the contents of the first note.",
+    },
+    {
+        id: 'fldshkdjsanqer4234',
+        title: "Second Noqte",
+        contents: "This is the contents of the second note.",
+    },
 ]
 
 const REQUEST_STATUS = {
@@ -42,7 +62,19 @@ function useRequestData() {
         setData(newData);
     }
 
-    return { data, requestStatus, addRecord };
+    function deleteRecord(id) {
+        let newData = data.filter((item) => item.id !== id );
+
+        setData(newData);
+    }
+
+    function updateRecord(rec) {
+        let newData = data.map(item => (item.id === rec.id ? rec : item));
+
+        setData(newData);
+    }
+
+    return { data, requestStatus, addRecord, deleteRecord, updateRecord };
 }
 
 export { useRequestData, REQUEST_STATUS };
