@@ -18,14 +18,17 @@
     margin-right: .4rem;
 }
 
-.user {
+.userImage {
     border-radius: 50%;
+    width: 50px;
 }
 
 .filterContainer {
     align-self: center;
+    flex-grow: 1;
     order: 1;
     margin: .4rem;
+    text-align: center;
 }
 
 .filterBox {
@@ -50,5 +53,7 @@
     .filterContainer {
         order: 0;
         margin: 0;
+        flex-grow: 0;
     }
+
 }

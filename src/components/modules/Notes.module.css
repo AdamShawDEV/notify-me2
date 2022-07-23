@@ -28,6 +28,11 @@
     color: #fff;
 }
 
+.errorMessage {
+    font-size: 3rem;
+    color: #f00;
+}
+
 .textArea {
     resize: none;
 }

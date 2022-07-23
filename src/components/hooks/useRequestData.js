@@ -3,33 +3,18 @@ import { useEffect, useState } from "react"
 const notesData = [
     {
         id: 'lenfk3l3n4jn3',
-        title: "First Note",
-        contents: "This the the contents of the first note.",
+        title: "Welcome",
+        contents: "This is an example site.",
     },
     {
         id: 'fldshkdjsan4234',
         title: "Second Note",
-        contents: "This is the contents of the second note.",
+        contents: "Feel free to test out some of the sites features.",
     },
     {
         id: 'lenfk3l3ern4jn3',
-        title: "First Note",
-        contents: "This the the contents of the first note.",
-    },
-    {
-        id: 'fqreldshwrkdjsan4234',
-        title: "Second Note",
-        contents: "This is the contents of the second note.",
-    },
-    {
-        id: 'lenfk3lre3n4jn3',
-        title: "First Note",
-        contents: "This the the contents of the first note.",
-    },
-    {
-        id: 'fldshkdjsanqer4234',
-        title: "Second Noqte",
-        contents: "This is the contents of the second note.",
+        title: "About",
+        contents: "This site was created using react and standard CSS",
     },
 ]
 

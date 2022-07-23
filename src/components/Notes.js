@@ -82,22 +82,29 @@ function Loading() {
     );
 }
 
+function Error() {
+    return (
+        <div className={styles.errorMessage} >An error occurred 😒</div>
+    )
+}
+
 function Notes() {
     const { data, requestStatus, addRecord, deleteRecord, updateRecord } = useRequestData();
     const { noteFilter } = useContext(NoteFilterContext);
 
     return (
         <main className={styles.notesContainer} >
-            {requestStatus === REQUEST_STATUS.SUCCESS ?
-                data.filter((noteData) => {
-                    return noteData.title.includes(noteFilter) ||
-                        noteData.contents.includes(noteFilter);
-                })
-                    .map((noteData) => <Note key={noteData.id}
-                        note={noteData}
-                        deleteRecord={deleteRecord}
-                        updateRecord={updateRecord} />) :
-                <Loading />}
+            {requestStatus === REQUEST_STATUS.LOADING ?
+                <Loading /> : requestStatus === REQUEST_STATUS.SUCCESS ?
+                    data.filter((noteData) => {
+                        return noteData.title.includes(noteFilter) ||
+                            noteData.contents.includes(noteFilter);
+                    })
+                        .map((noteData) => <Note key={noteData.id}
+                            note={noteData}
+                            deleteRecord={deleteRecord}
+                            updateRecord={updateRecord} />) :
+                    <Error />}
             <NewNoteButton addRecord={addRecord} />
         </main>
     );

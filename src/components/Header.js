@@ -1,5 +1,6 @@
 import styles from './modules/Header.module.css';
-import logo from './logo.png';
+import logo from './images/logo.png';
+import userImage from './images/user_pic.jpg';
 import { useContext } from 'react';
 import { NoteFilterContext } from './hooks/NoteFilterContext';
 
@@ -22,7 +23,7 @@ function Header() {
             </div>
             <div className={styles.userContainer} >
                 <span className={styles.userName}>Adam Shaw</span>
-                <img className={styles.user} src="https://via.placeholder.com/50" />
+                <img className={styles.userImage} alt='user pic' src={userImage} />
             </div>
         </header>
     );
