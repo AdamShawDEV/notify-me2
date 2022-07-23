@@ -1,11 +1,13 @@
 import styles from './modules/Note.module.css';
 import { useState } from 'react';
 import Modal from './Modal';
+import LoadingSpinner from './LoadingSpinner';
 
 function EditButton({ note, updateRecord }) {
   const [isModalOpen, setIsModalOpen] = useState();
   const [title, setTitle] = useState(note.title);
   const [contents, setContents] = useState(note.contents);
+  const [isPendingEdit, setIsPendingEdit] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -16,8 +18,11 @@ function EditButton({ note, updateRecord }) {
       contents,
     };
 
-    updateRecord(newNote);
+    const callBack = () => { setIsPendingEdit(false) };
+
+    updateRecord(newNote, callBack);
     setIsModalOpen(false);
+    setIsPendingEdit(true);
   }
 
   function handleClose() {
@@ -30,7 +35,10 @@ function EditButton({ note, updateRecord }) {
   return (
     <>
       <button className={styles.button}
-        onClick={() => setIsModalOpen(true)}>edit</button>
+        onClick={() => setIsModalOpen(true)}
+        disabled={isPendingEdit}>
+        {isPendingEdit ? <LoadingSpinner /> : "Edit"}
+      </button>
       <Modal isOpen={isModalOpen}
         handleClose={handleClose}
         heading='Edit Note'>
@@ -64,16 +72,23 @@ function EditButton({ note, updateRecord }) {
 
 function DeleteButton({ id, deleteRecord }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPendingDelete, setIsPendingDelete] = useState(false);
 
   function handleDelete() {
-    deleteRecord(id);
+    const callBack = () => { setIsPendingDelete(false) };
+
+    setIsPendingDelete(true);
+    deleteRecord(id, callBack);
     setIsModalOpen(false);
   }
 
   return (
     <>
       <button className={styles.button}
-        onClick={() => setIsModalOpen(true)} >delete</button>
+        onClick={() => setIsModalOpen(true)}
+        disabled={isPendingDelete}>
+        {isPendingDelete ? <LoadingSpinner /> : 'delete' }
+      </button>
       <Modal isOpen={isModalOpen}
         handleClose={() => setIsModalOpen(false)}
         heading='Are you sure?'>

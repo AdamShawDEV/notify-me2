@@ -4,6 +4,7 @@ import { useRequestData, REQUEST_STATUS } from './hooks/useRequestData'
 import { useState, useContext } from 'react';
 import Modal from './Modal';
 import { NoteFilterContext } from './hooks/NoteFilterContext';
+import LoadingSpinner from './LoadingSpinner';
 
 function generateId(numChars) {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMONPQRSTUVWXYZ1234567890';
@@ -20,6 +21,7 @@ function NewNoteButton({ addRecord }) {
     const [title, setTitle] = useState('');
     const [contents, setContents] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPendingAdd, setIsPendingAdd] = useState(false);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -30,7 +32,10 @@ function NewNoteButton({ addRecord }) {
             contents,
         };
 
-        addRecord(newRec);
+        const callBack = () => { setIsPendingAdd(false) };
+
+        setIsPendingAdd(true);
+        addRecord(newRec, callBack);
         handleClose();
     }
 
@@ -43,7 +48,10 @@ function NewNoteButton({ addRecord }) {
     return (
         <>
             <button className={styles.addNewButton}
-                onClick={() => setIsModalOpen(true)}>add new</button>
+                onClick={() => setIsModalOpen(true)}
+                disabled={isPendingAdd}>
+                {isPendingAdd ? <LoadingSpinner /> : "add new" }
+            </button>
             <Modal
                 isOpen={isModalOpen}
                 handleClose={handleClose}

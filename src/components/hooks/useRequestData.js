@@ -40,23 +40,40 @@ function useRequestData() {
         getData();
     }, []);
 
-    console.log(data);
-
-    function addRecord(rec) {
+    async function addRecord(rec, doneCallBack = null) {
         let newData = [...data, rec];
-        setData(newData);
+
+        try {
+            await delay(2000);
+            setData(newData);
+            if(doneCallBack) doneCallBack();
+        } catch (error) {
+            console.log(`error adding record ${rec}, ${error}`);
+        }
     }
 
-    function deleteRecord(id) {
-        let newData = data.filter((item) => item.id !== id );
+    async function deleteRecord(id, doneCallBack = null) {
+        let newData = data.filter((item) => item.id !== id);
 
-        setData(newData);
+        try {
+            await delay(2000);
+            setData(newData);
+            if (doneCallBack) doneCallBack();
+        } catch (error) {
+            console.log(`error deletin record with id:${id}, ${error}`);
+        }
     }
 
-    function updateRecord(rec) {
+    async function updateRecord(rec, doneCallBack = null) {
         let newData = data.map(item => (item.id === rec.id ? rec : item));
 
-        setData(newData);
+        try {
+            await delay(2000);
+            setData(newData);
+            if (doneCallBack) doneCallBack();
+        } catch (error) {
+            console.log(`An Error occurred while updating record ${rec}, ${error}`);
+        }
     }
 
     return { data, requestStatus, addRecord, deleteRecord, updateRecord };
