@@ -3,6 +3,7 @@ import logo from './images/logo.png';
 import userImage from './images/user_pic.jpg';
 import { useContext } from 'react';
 import { NoteFilterContext } from './hooks/NoteFilterContext';
+import { RiCloseLine } from 'react-icons/ri';
 
 function Header() {
     const { noteFilter, setNoteFilter } = useContext(NoteFilterContext);
@@ -15,11 +16,14 @@ function Header() {
                 <img src={logo} alt='notify-me' />
             </div>
             <div className={styles.filterContainer}>
-                <input className={styles.filterBox}
-                    type='text'
-                    placeholder='search notes'
-                    onChange={e => setNoteFilter(e.target.value)}
-                    value={noteFilter} />
+                <div class={styles.filterButtonContainer}>
+                    <input className={styles.filterBox}
+                        type='text'
+                        placeholder='search notes'
+                        onChange={e => setNoteFilter(e.target.value)}
+                        value={noteFilter} />
+                    {noteFilter && <button title='clear' onClick={() => setNoteFilter('')} class={styles.clearButton}><RiCloseLine /></button>}
+                </div>
             </div>
             <div className={styles.userContainer} >
                 <span className={styles.userName}>Adam Shaw</span>

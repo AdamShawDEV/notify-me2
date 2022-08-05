@@ -10,7 +10,7 @@ const initailNotesData = [
     {
         id: 'fldshkdjsan4234',
         title: "⚙️Features⚙️",
-        contents: "Key features:\n✨ React.js\n✨ Standard CSS\n✨ Local Storage\n✨ CRUD operations\n✨ Search filter",
+        contents: "Key features:\n✨ React.js\n✨ Standard CSS\n✨ Local Storage\n✨ CRUD operations\n✨ Search filter\n✨ Progress indicators",
         alignment: 'left',
     },
     {

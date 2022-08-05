@@ -43,6 +43,27 @@
     padding-left: .4rem;
 }
 
+.filterButtonContainer {
+    position: relative;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.clearButton {
+    position: absolute;
+    font-size: 1.5rem;
+    color: #fff;
+    right: .2rem;
+    top: .1rem;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.clearButton:hover {
+    color: #000;
+}
+
 @media screen and (max-width: 745px) {
     .filterBox {
         width: 15rem;
