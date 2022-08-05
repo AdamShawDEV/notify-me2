@@ -5,12 +5,13 @@ import { useState, useContext } from 'react';
 import Modal from './Modal';
 import { NoteFilterContext } from './hooks/NoteFilterContext';
 import LoadingSpinner from './LoadingSpinner';
+import { AiOutlineAlignLeft, AiOutlineAlignCenter, AiOutlineAlignRight } from 'react-icons/ai';
 
-function generateId(numChars) {
+function generateId(idLength) {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMONPQRSTUVWXYZ1234567890';
     let output = '';
 
-    for (let i = 0; i < numChars; i++) {
+    for (let i = 0; i < idLength; i++) {
         output += chars.charAt(Math.floor(Math.random() * chars.length));
     }
 
@@ -20,6 +21,7 @@ function generateId(numChars) {
 function NewNoteButton({ addRecord }) {
     const [title, setTitle] = useState('');
     const [contents, setContents] = useState('');
+    const [alignment, setAlignment] = useState('left');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPendingAdd, setIsPendingAdd] = useState(false);
 
@@ -30,6 +32,7 @@ function NewNoteButton({ addRecord }) {
             id: generateId(16),
             title,
             contents,
+            alignment,
         };
 
         const callBack = () => { setIsPendingAdd(false) };
@@ -42,6 +45,7 @@ function NewNoteButton({ addRecord }) {
     function handleClose() {
         setTitle('');
         setContents('');
+        setAlignment('left');
         setIsModalOpen(false);
     }
 
@@ -50,7 +54,7 @@ function NewNoteButton({ addRecord }) {
             <button className={styles.addNewButton}
                 onClick={() => setIsModalOpen(true)}
                 disabled={isPendingAdd}>
-                {isPendingAdd ? <LoadingSpinner /> : "add new" }
+                {isPendingAdd ? <LoadingSpinner /> : "add new"}
             </button>
             <Modal
                 isOpen={isModalOpen}
@@ -65,11 +69,40 @@ function NewNoteButton({ addRecord }) {
                         value={title}
                         required />
                     <label>Contents:</label>
+                    <div className={styles.radioButtonBox}>
+                        <label>
+                            <input class={styles.radioButtonInput}
+                                name="alignment" type="radio" value="left"
+                                checked={alignment === 'left'}
+                                onChange={(e) => setAlignment(e.target.value)} />
+                            <div class={styles.radioButton}>
+                                <AiOutlineAlignLeft />
+                            </div>
+                        </label>
+                        <label>
+                            <input class={styles.radioButtonInput}
+                                name="alignment" type="radio" value="center"
+                                checked={alignment === 'center'}
+                                onChange={(e) => setAlignment(e.target.value)} />
+                            <div class={styles.radioButton}>
+                                <AiOutlineAlignCenter />
+                            </div>
+                        </label>
+                        <label>
+                            <input class={styles.radioButtonInput} name="alignment"
+                                type="radio" value="right" checked={alignment === 'right'}
+                                onChange={(e) => setAlignment(e.target.value)} />
+                            <div class={styles.radioButton}>
+                                <AiOutlineAlignRight />
+                            </div>
+                        </label>
+                    </div>
                     <textarea
                         className={styles.noteContentsInput}
                         onChange={e => setContents(e.target.value)}
                         value={contents}
-                        required />
+                        required
+                        style={{textAlign: alignment}} />
                     <div className={styles.formButtonBox}>
                         <input
                             className={styles.formButtons}

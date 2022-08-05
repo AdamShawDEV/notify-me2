@@ -2,10 +2,12 @@ import styles from './modules/Note.module.css';
 import { useState } from 'react';
 import Modal from './Modal';
 import LoadingSpinner from './LoadingSpinner';
+import { AiOutlineAlignLeft, AiOutlineAlignCenter, AiOutlineAlignRight } from 'react-icons/ai';
 
 function EditButton({ note, updateRecord }) {
   const [isModalOpen, setIsModalOpen] = useState();
   const [title, setTitle] = useState(note.title);
+  const [alignment, setAlignment] = useState(note.alignment);
   const [contents, setContents] = useState(note.contents);
   const [isPendingEdit, setIsPendingEdit] = useState(false);
 
@@ -16,6 +18,7 @@ function EditButton({ note, updateRecord }) {
       id: note.id,
       title,
       contents,
+      alignment,
     };
 
     const callBack = () => { setIsPendingEdit(false) };
@@ -28,6 +31,7 @@ function EditButton({ note, updateRecord }) {
   function handleClose() {
     setTitle(note.title);
     setContents(note.contents);
+    setAlignment(note.alignment)
 
     setIsModalOpen(false);
   }
@@ -37,7 +41,7 @@ function EditButton({ note, updateRecord }) {
       <button className={styles.button}
         onClick={() => setIsModalOpen(true)}
         disabled={isPendingEdit}>
-        {isPendingEdit ? <LoadingSpinner /> : "Edit"}
+        {isPendingEdit ? <LoadingSpinner /> : "edit"}
       </button>
       <Modal isOpen={isModalOpen}
         handleClose={handleClose}
@@ -51,11 +55,40 @@ function EditButton({ note, updateRecord }) {
             value={title}
             required />
           <label>Contents:</label>
+          <div className={styles.radioButtonBox}>
+            <label>
+              <input class={styles.radioButtonInput}
+                name="alignment" type="radio" value="left"
+                checked={alignment === 'left'}
+                onChange={(e) => setAlignment(e.target.value)} />
+              <div class={styles.radioButton}>
+                <AiOutlineAlignLeft />
+              </div>
+            </label>
+            <label>
+              <input class={styles.radioButtonInput}
+                name="alignment" type="radio" value="center"
+                checked={alignment === 'center'}
+                onChange={(e) => setAlignment(e.target.value)} />
+              <div class={styles.radioButton}>
+                <AiOutlineAlignCenter />
+              </div>
+            </label>
+            <label>
+              <input class={styles.radioButtonInput} name="alignment"
+                type="radio" value="right" checked={alignment === 'right'}
+                onChange={(e) => setAlignment(e.target.value)} />
+              <div class={styles.radioButton}>
+                <AiOutlineAlignRight />
+              </div>
+            </label>
+          </div>
           <textarea
             className={styles.noteContentsInput}
             onChange={e => setContents(e.target.value)}
             value={contents}
-            required />
+            required
+            style={{textAlign: alignment}} />
           <div className={styles.buttonBox}>
             <input
               className={styles.button}
@@ -87,7 +120,7 @@ function DeleteButton({ id, deleteRecord }) {
       <button className={styles.button}
         onClick={() => setIsModalOpen(true)}
         disabled={isPendingDelete}>
-        {isPendingDelete ? <LoadingSpinner /> : 'delete' }
+        {isPendingDelete ? <LoadingSpinner /> : 'delete'}
       </button>
       <Modal isOpen={isModalOpen}
         handleClose={() => setIsModalOpen(false)}
@@ -107,7 +140,7 @@ function Note({ note, deleteRecord, updateRecord }) {
   return (
     <article className={styles.noteContainer} >
       <span className={styles.title} >{note.title}</span>
-      <div className={styles.contents} >{note.contents}</div>
+      <div style={{ textAlign: note.alignment }} className={styles.contents} >{note.contents}</div>
       <div className={styles.buttonBox} >
         <EditButton note={note} updateRecord={updateRecord} />
         <DeleteButton id={note.id} deleteRecord={deleteRecord} />
