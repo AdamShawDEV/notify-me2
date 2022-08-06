@@ -4,6 +4,7 @@ import userImage from './images/user_pic.jpg';
 import { useContext } from 'react';
 import { NoteFilterContext } from './hooks/NoteFilterContext';
 import { RiCloseLine } from 'react-icons/ri';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 function Header() {
     const { noteFilter, setNoteFilter } = useContext(NoteFilterContext);
@@ -17,6 +18,7 @@ function Header() {
             </div>
             <div className={styles.filterContainer}>
                 <div class={styles.filterButtonContainer}>
+                    <AiOutlineSearch style={{position: 'absolute', left: '.4rem', top: '.1rem', fontSize: '1.5rem', color: 'white' }} />
                     <input className={styles.filterBox}
                         type='text'
                         placeholder='search notes'
