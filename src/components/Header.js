@@ -17,7 +17,7 @@ function Header() {
                 <img src={logo} alt='notify-me' />
             </div>
             <div className={styles.filterContainer}>
-                <div class={styles.filterButtonContainer}>
+                <div className={styles.filterButtonContainer}>
                     <AiOutlineSearch style={{position: 'absolute', left: '.4rem', top: '.1rem', fontSize: '1.5rem', color: 'white' }} />
                     <input className={styles.filterBox}
                         type='text'
