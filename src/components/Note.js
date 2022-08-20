@@ -94,12 +94,12 @@ function EditButton({ note, updateRecord }) {
             required
             style={{ textAlign: alignment }} />
           <div className={styles.buttonBox}>
-            <input
-              className={styles.button}
-              type="submit" value="Submit" />
-            <button
-              className={styles.button}
-              onClick={handleClose}>Cancel</button>
+            <Button>
+              Submit
+            </Button>
+            <Button onClick={handleClose}>
+              Cancel
+            </Button>
           </div>
         </form>
       </Modal>
@@ -131,10 +131,14 @@ function DeleteButton({ id, deleteRecord }) {
         handleClose={() => setIsModalOpen(false)}
         heading='Are you sure?'>
         <div className={styles.buttonBox}>
-          <button className={styles.button}
-            onClick={handleDelete}>delete</button>
-          <button className={styles.button}
-            onClick={() => setIsModalOpen(false)}>cancel</button>
+          <Button
+            onClick={handleDelete}>
+            delete
+          </Button>
+          <Button
+          onClick={() => setIsModalOpen(false)}>
+            cancel
+          </Button>
         </div>
       </Modal>
     </>
