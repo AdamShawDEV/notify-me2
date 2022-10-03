@@ -18,7 +18,7 @@ function Header() {
             </div>
             <div className={styles.filterContainer}>
                 <div className={styles.filterButtonContainer}>
-                    <AiOutlineSearch style={{position: 'absolute', left: '.4rem', top: '.1rem', fontSize: '1.5rem', color: 'white' }} />
+                    <AiOutlineSearch style={{position: 'absolute', left: '.4rem', top: '.25rem', fontSize: '1.5rem', color: '#696969ff' }} />
                     <input className={styles.filterBox}
                         type='text'
                         placeholder='search notes'

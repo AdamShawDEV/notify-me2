@@ -27,9 +27,6 @@ function Modal({ children, heading,  isOpen, handleClose }) {
             <div className={styles.darkBG}>
                 <div className={styles.centered}>
                     <div className={styles.modal}>
-                        <div className={styles.modalHeader}>
-                            <h5 className={styles.heading} >{heading}</h5>
-                        </div>
                         <button onClick={handleClick} className={styles.closeBtn}>
                             <RiCloseLine style={{ marginBottom: "-3px" }} />
                         </button>

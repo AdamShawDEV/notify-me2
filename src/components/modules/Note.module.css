@@ -1,11 +1,10 @@
 .noteContainer {
-    background-color: rgb(124, 124, 246);
-    padding: .4rem;
+    background-color: #cacacaff;
+    padding: .8rem;
     border-radius: .5rem;
-    border: 1px solid darkblue;
     text-align: center;
-    height: 14rem;
     word-wrap: break-word;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, .5);
 }
 
 .title {
@@ -14,17 +13,19 @@
 }
 
 .contents {
-    background-color: rgb(174, 173, 255);
+    background-color: #fff;
+    margin-top: .8rem;
     height: 10rem;
     white-space: pre-wrap;
     overflow-y: auto;
-    padding-left: .4rem;
+    padding: .4rem .4rem;
+    box-shadow: inset 3px 3px 5px rgba(0, 0, 0, .5);
 }
 
 .buttonBox {
     display: flex;
     justify-content: space-around;
-    padding-top: .4rem;
+    padding-top: .8rem;
 }
 
 .editNoteForm {
@@ -40,15 +41,27 @@
 .noteContentsInput {
     resize: none;
     height: 10rem;
-    font-size: 1rem;
 }
 
-.noteTitleInput,
-.noteContentsInput {
-    background-color: rgb(174, 173, 255);
-    border: none;
-    border-radius: 0.4rem;
-    padding: 0 .4rem;
+.inputText {
+    background-color: #fff;
+    outline: none;
+    border: solid 2px #c5c5c5ff;
+    padding: .4rem .4rem;
+    border-radius: .4rem;
+}
+
+.inputText::placeholder{
+    color: #5f5f5dff;
+}
+
+.inputText:hover {
+    border-color: #6a6a6aff;
+}
+
+.inputText:focus {
+    outline: none;
+    border-color: #2d2afbff;
 }
 
 .radioButton {

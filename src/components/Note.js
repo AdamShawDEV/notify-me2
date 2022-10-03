@@ -1,18 +1,20 @@
 import styles from './modules/Note.module.css';
 import { useState } from 'react';
 import Modal from './Modal';
-import LoadingSpinner from './LoadingSpinner';
 import { AiOutlineAlignLeft, AiOutlineAlignCenter, AiOutlineAlignRight } from 'react-icons/ai';
 import Button from './Button';
 
+const PENDING_ACTION = {
+  EDIT: 'edit',
+  DELETE: 'delete',
+  NONE: 'none',
+};
 
-
-function EditButton({ note, updateRecord }) {
+function EditButton({ note, updateRecord, pendingAction, setPendingAction }) {
   const [isModalOpen, setIsModalOpen] = useState();
   const [title, setTitle] = useState(note.title);
   const [alignment, setAlignment] = useState(note.alignment);
   const [contents, setContents] = useState(note.contents);
-  const [isPendingEdit, setIsPendingEdit] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -24,11 +26,11 @@ function EditButton({ note, updateRecord }) {
       alignment,
     };
 
-    const callBack = () => { setIsPendingEdit(false) };
+    const callBack = () => { setPendingAction(PENDING_ACTION.NONE) };
 
     updateRecord(newNote, callBack);
     setIsModalOpen(false);
-    setIsPendingEdit(true);
+    setPendingAction(PENDING_ACTION.EDIT);
   }
 
   function handleClose() {
@@ -43,17 +45,17 @@ function EditButton({ note, updateRecord }) {
     <>
       <Button
         onClick={() => setIsModalOpen(true)}
-        disabled={isPendingEdit}
-        pendingOperation={isPendingEdit}>
+        disabled={pendingAction !== PENDING_ACTION.NONE}
+        pendingOperation={pendingAction === PENDING_ACTION.EDIT}>
         edit
       </Button>
       <Modal isOpen={isModalOpen}
-        handleClose={handleClose}
-        heading='Edit Note'>
+        handleClose={handleClose}>
+        <h1 className={styles.title}>Edit Note</h1>
         <form className={styles.editNoteForm}
           onSubmit={e => handleSubmit(e)} >
           <label>Title:</label>
-          <input className={styles.noteTitleInput}
+          <input className={styles.inputText}
             type="text"
             onChange={e => setTitle(e.target.value)}
             value={title}
@@ -88,17 +90,17 @@ function EditButton({ note, updateRecord }) {
             </label>
           </div>
           <textarea
-            className={styles.noteContentsInput}
+            className={`${styles.inputText} ${styles.noteContentsInput}`}
             onChange={e => setContents(e.target.value)}
             value={contents}
             required
             style={{ textAlign: alignment }} />
           <div className={styles.buttonBox}>
             <Button>
-              Submit
+              submit
             </Button>
             <Button onClick={handleClose}>
-              Cancel
+              cancel
             </Button>
           </div>
         </form>
@@ -107,14 +109,13 @@ function EditButton({ note, updateRecord }) {
   );
 }
 
-function DeleteButton({ id, deleteRecord }) {
+function DeleteButton({ id, deleteRecord, pendingAction, setPendingAction }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPendingDelete, setIsPendingDelete] = useState(false);
 
   function handleDelete() {
-    const callBack = () => { setIsPendingDelete(false) };
+    const callBack = () => { setPendingAction(PENDING_ACTION.NONE) };
 
-    setIsPendingDelete(true);
+    setPendingAction(PENDING_ACTION.DELETE);
     deleteRecord(id, callBack);
     setIsModalOpen(false);
   }
@@ -123,20 +124,21 @@ function DeleteButton({ id, deleteRecord }) {
     <>
       <Button
         onClick={() => setIsModalOpen(true)}
-        disabled={isPendingDelete}
-        pendingOperation={isPendingDelete}>
+        disabled={pendingAction !== PENDING_ACTION.NONE}
+        pendingOperation={pendingAction === PENDING_ACTION.DELETE}>
         delete
       </Button>
       <Modal isOpen={isModalOpen}
-        handleClose={() => setIsModalOpen(false)}
-        heading='Are you sure?'>
+        handleClose={() => setIsModalOpen(false)}>
+        <h1 className={styles.title}>Are you  sure?</h1>
         <div className={styles.buttonBox}>
           <Button
+            type='delete'
             onClick={handleDelete}>
             delete
           </Button>
           <Button
-          onClick={() => setIsModalOpen(false)}>
+            onClick={() => setIsModalOpen(false)}>
             cancel
           </Button>
         </div>
@@ -146,13 +148,15 @@ function DeleteButton({ id, deleteRecord }) {
 }
 
 function Note({ note, deleteRecord, updateRecord }) {
+  const [pendingAction, setPendingAction] = useState(PENDING_ACTION.NONE);
+
   return (
     <article className={styles.noteContainer} >
       <span className={styles.title} >{note.title}</span>
       <div style={{ textAlign: note.alignment }} className={styles.contents} >{note.contents}</div>
       <div className={styles.buttonBox} >
-        <EditButton note={note} updateRecord={updateRecord} />
-        <DeleteButton id={note.id} deleteRecord={deleteRecord} />
+        <EditButton note={note} updateRecord={updateRecord} pendingAction={pendingAction} setPendingAction={setPendingAction} />
+        <DeleteButton id={note.id} deleteRecord={deleteRecord} pendingAction={pendingAction} setPendingAction={setPendingAction} />
       </div>
     </article>
   );
