@@ -138,8 +138,8 @@ function Notes() {
             {requestStatus === REQUEST_STATUS.LOADING ?
                 <Loading /> : requestStatus === REQUEST_STATUS.SUCCESS ?
                     data.filter((noteData) => {
-                        return noteData.title.includes(noteFilter) ||
-                            noteData.contents.includes(noteFilter);
+                        return noteData.title.toLowerCase().includes(noteFilter.toLowerCase()) ||
+                            noteData.contents.toLowerCase().includes(noteFilter.toLowerCase());
                     })
                         .map((noteData) => <Note key={noteData.id}
                             note={noteData}
