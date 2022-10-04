@@ -28,67 +28,22 @@
     padding-top: .8rem;
 }
 
-.editNoteForm {
-    display: flex;
-    flex-direction: column;
-}
-
-.noteTitleInput {
-    font-weight: 700;
-    font-size: 1.2rem;
-}
-
-.noteContentsInput {
-    resize: none;
-    height: 10rem;
-}
-
-.inputText {
-    background-color: #fff;
-    outline: none;
-    border: solid 2px #c5c5c5ff;
-    padding: .4rem .4rem;
+.loadingText {
+    min-width: 3rem;
+    height: 1rem;
+    width: 100%;
+    background-color: rgb(164, 164, 164);
+    margin: .4rem 0;
     border-radius: .4rem;
 }
 
-.inputText::placeholder{
-    color: #5f5f5dff;
-}
-
-.inputText:hover {
-    border-color: #6a6a6aff;
-}
-
-.inputText:focus {
-    outline: none;
-    border-color: #2d2afbff;
-}
-
-.radioButton {
-    font-size: 1.5rem;
+.loadingButton {
+    min-width: 5rem;
     padding: .4rem;
-    height: 1.7rem;
+    background-color: rgb(151, 151, 151);
     border-radius: .4rem;
-    background-color: rgb(174, 173, 255);
-    cursor: pointer;
-}
+    box-shadow: .1rem .1rem .2rem rgba(0, 0, 0, .5);
 
-.radioButtonInput:checked + .radioButton {
-    background-color: rgb(61, 58, 255);
-    color: #fff;
-}
-
-.radioButtonInput {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.radioButtonBox {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: .2rem;
 }
 
 @media screen and (min-width: 600px) {

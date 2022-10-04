@@ -30,15 +30,21 @@ const REQUEST_STATUS = {
 function useRequestData() {
     const [data, setData] = useState([]);
     const [requestStatus, setRequestStatus] = useState(REQUEST_STATUS.LOADING);
+    const [error, setError] = useState(null);
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     useEffect(() => {
         async function getData() {
-            await delay(2000);
-            const notesData = JSON.parse(localStorage.getItem("notesData")) ?? initailNotesData;
-            setData(notesData);
-            setRequestStatus(REQUEST_STATUS.SUCCESS);
+            try {
+                await delay(2000);
+                const notesData = JSON.parse(localStorage.getItem("notesData")) ?? initailNotesData;
+                setData(notesData);
+                setRequestStatus(REQUEST_STATUS.SUCCESS);
+            } catch(e) {
+                setError(e);
+                setRequestStatus(REQUEST_STATUS.ERROR);
+            }
         }
 
         getData();
@@ -51,9 +57,10 @@ function useRequestData() {
             await delay(2000);
             localStorage.setItem('notesData', JSON.stringify(newData));
             setData(newData);
-            if(doneCallBack) doneCallBack();
+            if (doneCallBack) doneCallBack();
         } catch (error) {
-            console.log(`error adding record ${rec}, ${error}`);
+            setError(error);
+            setRequestStatus(REQUEST_STATUS.ERROR);
         }
     }
 
@@ -66,7 +73,8 @@ function useRequestData() {
             setData(newData);
             if (doneCallBack) doneCallBack();
         } catch (error) {
-            console.log(`error deletin record with id:${id}, ${error}`);
+            setError(error);
+            setRequestStatus(REQUEST_STATUS.ERROR);
         }
     }
 
@@ -79,11 +87,12 @@ function useRequestData() {
             setData(newData);
             if (doneCallBack) doneCallBack();
         } catch (error) {
-            console.log(`An Error occurred while updating record ${rec}, ${error}`);
+            setError(error);
+            setRequestStatus(REQUEST_STATUS.ERROR);
         }
     }
 
-    return { data, requestStatus, addRecord, deleteRecord, updateRecord };
+    return { data, requestStatus, error, addRecord, deleteRecord, updateRecord };
 }
 
 export { useRequestData, REQUEST_STATUS };

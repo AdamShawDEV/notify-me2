@@ -9,21 +9,23 @@
 }
 
 .addNewButton {
-    color: rgb(205, 205, 255);
-    font-size: 4rem;
-    background-color: rgb(124, 124, 246);
-    padding: .4rem;
+    background-color: #cacacaff;
+    padding: .8rem;
     border-radius: .5rem;
-    border: 1px solid darkblue;
     text-align: center;
+    word-wrap: break-word;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, .5);
+    border: none;
+    color: rgb(67, 67, 67);
+    font-size: 4rem;
 }
 
 .addNewButton:hover {
-    background-color: rgb(153, 153, 250);
+    background-color: rgb(224, 224, 224);
 }
 
-.loading {
-    font-size: 3rem;
+.addNewButton:active {
+    background-color: rgb(104, 104, 104);
     color: #fff;
 }
 

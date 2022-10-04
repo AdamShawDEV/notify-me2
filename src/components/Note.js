@@ -1,110 +1,27 @@
 import styles from './modules/Note.module.css';
 import { useState } from 'react';
 import Modal from './Modal';
-import { AiOutlineAlignLeft, AiOutlineAlignCenter, AiOutlineAlignRight } from 'react-icons/ai';
 import Button from './Button';
-
-const PENDING_ACTION = {
-  EDIT: 'edit',
-  DELETE: 'delete',
-  NONE: 'none',
-};
+import AddEditNote from './AddEditNote';
+import { PENDING_ACTION } from '../consts';
 
 function EditButton({ note, updateRecord, pendingAction, setPendingAction }) {
   const [isModalOpen, setIsModalOpen] = useState();
-  const [title, setTitle] = useState(note.title);
-  const [alignment, setAlignment] = useState(note.alignment);
-  const [contents, setContents] = useState(note.contents);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    let newNote = {
-      id: note.id,
-      title,
-      contents,
-      alignment,
-    };
-
-    const callBack = () => { setPendingAction(PENDING_ACTION.NONE) };
-
-    updateRecord(newNote, callBack);
-    setIsModalOpen(false);
-    setPendingAction(PENDING_ACTION.EDIT);
-  }
-
-  function handleClose() {
-    setTitle(note.title);
-    setContents(note.contents);
-    setAlignment(note.alignment)
-
-    setIsModalOpen(false);
-  }
 
   return (
     <>
       <Button
         onClick={() => setIsModalOpen(true)}
         disabled={pendingAction !== PENDING_ACTION.NONE}
-        pendingOperation={pendingAction === PENDING_ACTION.EDIT}>
+        pendingOperation={pendingAction === PENDING_ACTION.EDIT_ADD}>
         edit
       </Button>
-      <Modal isOpen={isModalOpen}
-        handleClose={handleClose}>
-        <h1 className={styles.title}>Edit Note</h1>
-        <form className={styles.editNoteForm}
-          onSubmit={e => handleSubmit(e)} >
-          <label>Title:</label>
-          <input className={styles.inputText}
-            type="text"
-            onChange={e => setTitle(e.target.value)}
-            value={title}
-            required />
-          <label>Contents:</label>
-          <div className={styles.radioButtonBox}>
-            <label>
-              <input className={styles.radioButtonInput}
-                name="alignment" type="radio" value="left"
-                checked={alignment === 'left'}
-                onChange={(e) => setAlignment(e.target.value)} />
-              <div className={styles.radioButton}>
-                <AiOutlineAlignLeft />
-              </div>
-            </label>
-            <label>
-              <input className={styles.radioButtonInput}
-                name="alignment" type="radio" value="center"
-                checked={alignment === 'center'}
-                onChange={(e) => setAlignment(e.target.value)} />
-              <div className={styles.radioButton}>
-                <AiOutlineAlignCenter />
-              </div>
-            </label>
-            <label>
-              <input className={styles.radioButtonInput} name="alignment"
-                type="radio" value="right" checked={alignment === 'right'}
-                onChange={(e) => setAlignment(e.target.value)} />
-              <div className={styles.radioButton}>
-                <AiOutlineAlignRight />
-              </div>
-            </label>
-          </div>
-          <textarea
-            className={`${styles.inputText} ${styles.noteContentsInput}`}
-            onChange={e => setContents(e.target.value)}
-            value={contents}
-            required
-            style={{ textAlign: alignment }} />
-          <div className={styles.buttonBox}>
-            <Button>
-              submit
-            </Button>
-            <Button onClick={handleClose}>
-              cancel
-            </Button>
-          </div>
-        </form>
-      </Modal>
+      <AddEditNote
+        note={note}
+        setPendingAction={setPendingAction}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        updateRecord={updateRecord} />
     </>
   );
 }

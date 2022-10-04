@@ -8,7 +8,9 @@ function App() {
     <div className="App">
       <NoteFilterContextProvider>
         <Header />
-        <Notes />
+        <main>
+          <Notes />
+        </main>
       </NoteFilterContextProvider>
     </div >
   );
