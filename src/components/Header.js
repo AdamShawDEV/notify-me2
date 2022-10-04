@@ -7,10 +7,13 @@ import { RiCloseLine } from 'react-icons/ri';
 import { AiOutlineSearch } from 'react-icons/ai';
 import Button from './Button';
 import LoginForm from './LoginForm';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, logout } from '../firebase';
 
 function Header() {
     const { noteFilter, setNoteFilter } = useContext(NoteFilterContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [user] = useAuthState(auth);
 
     return (
         <>
@@ -32,9 +35,13 @@ function Header() {
                 <div className={styles.userContainer} >
                     {/* <span className={styles.userName}>Adam Shaw</span>
                 <img className={styles.userImage} alt='user pic' src={userImage} /> */}
-                    <Button onClick={() => setIsModalOpen(true)}>
-                        login
-                    </Button>
+                    {user ?
+                        <Button onClick={logout}>
+                            logout
+                        </Button> :
+                        <Button onClick={() => setIsModalOpen(true)}>
+                            login
+                        </Button>}
                 </div>
             </header>
             <LoginForm isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />

@@ -4,4 +4,9 @@ const PENDING_ACTION = {
     NONE: 'none',
   };
 
-  export { PENDING_ACTION };
+  const APP_STATE = {
+    DEMO: 'demo',
+    USER: 'user',
+  }
+
+  export { PENDING_ACTION, APP_STATE };
