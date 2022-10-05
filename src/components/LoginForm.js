@@ -11,6 +11,7 @@ function LoginForm({ modalOpen, setModalOpen }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [user, loading, error] = useAuthState(auth);
+    const [firebaseError, setFirebaseError] = useState(null);
 
     useEffect(() => {
         if (loading) return;
@@ -21,7 +22,7 @@ function LoginForm({ modalOpen, setModalOpen }) {
     function handleFormSubmit(e) {
         e.preventDefault();
 
-        logInWithEmailAndPassword(email, password);
+        logInWithEmailAndPassword(email, password, setFirebaseError);
     }
 
     function register() {
@@ -41,6 +42,7 @@ function LoginForm({ modalOpen, setModalOpen }) {
     }
 
     if (error) throw error;
+    if (firebaseError) throw firebaseError;
 
     return (
         <Modal isOpen={modalOpen === MODAL_OPEN.LOGIN } handleClose={() => closeForm()}>
@@ -57,7 +59,7 @@ function LoginForm({ modalOpen, setModalOpen }) {
                 </div>
             </form>
             <div className={styles.buttonBox} >
-                <Button onClick={signInWithGoogle}>
+                <Button onClick={() => signInWithGoogle(setFirebaseError)}>
                     login with google
                 </Button>
                 <LinkButton onClick={reset}>forgot password</LinkButton>

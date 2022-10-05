@@ -10,6 +10,7 @@ import { MODAL_OPEN } from '../consts';
 function Reset({ modalOpen, setModalOpen }) {
     const [email, setEmail] = useState('');
     const [user, loading, error] = useAuthState(auth);
+    const [firebaseError, setFirebaseError] = useState(null);
 
     useEffect(() => {
         if (loading) return;
@@ -25,11 +26,12 @@ function Reset({ modalOpen, setModalOpen }) {
     function handleFormSubmit(e) {
         e.preventDefault();
 
-        sendPasswordReset(auth, email);
+        sendPasswordReset(auth, email, setFirebaseError);
         setModalOpen(MODAL_OPEN.NONE)
     }
 
     if (error) throw error;
+    if(firebaseError) throw firebaseError;
 
     return (
         <Modal isOpen={modalOpen === MODAL_OPEN.RESET} handleClose={onClose}>

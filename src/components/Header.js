@@ -1,18 +1,35 @@
 import styles from './modules/Header.module.css';
 import logo from './images/logo.png';
 // import userImage from './images/user_pic.jpg';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { NoteFilterContext } from './hooks/NoteFilterContext';
 import { RiCloseLine } from 'react-icons/ri';
 import { AiOutlineSearch } from 'react-icons/ai';
 import Button from './Button';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, logout } from '../firebase';
+import { auth, db, logout } from '../firebase';
 import { MODAL_OPEN } from '../consts';
+import { doc, getDoc, where } from 'firebase/firestore';
 
 function Header({ setModalOpen }) {
     const { noteFilter, setNoteFilter } = useContext(NoteFilterContext);
     const [user] = useAuthState(auth);
+    const [userImage, setUserImage] = useState(null);
+
+    useEffect(() => {
+        const getUserData = async () => {
+            if (user) {
+                const docRef = doc(db, 'users', user.uid);
+                const docSnap = await getDoc(docRef);
+                console.log(docSnap.data());
+                // setUserImage(user.photoURL);
+            } else {
+                setUserImage(null);
+            }
+        }
+
+        getUserData();
+    }, [user])
 
     return (
         <>
@@ -35,12 +52,13 @@ function Header({ setModalOpen }) {
                     {/* <span className={styles.userName}>Adam Shaw</span>
                 <img className={styles.userImage} alt='user pic' src={userImage} /> */}
                     {user ?
-                        <Button onClick={logout}>
-                            logout
-                        </Button> :
+                        <button className={styles.userName} onClick={logout}>
+                            {user.displayName}aa
+                        </button> :
                         <Button onClick={() => setModalOpen(MODAL_OPEN.LOGIN)}>
                             login
                         </Button>}
+                    {userImage && <img className={styles.userImage} alt='user pic' src={userImage} />}
                 </div>
             </header>
         </>

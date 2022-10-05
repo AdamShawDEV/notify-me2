@@ -13,7 +13,9 @@ import {
     getDocs,
     collection,
     where,
-    addDoc,
+    doc,
+    setDoc,
+    getDoc,
 } from "firebase/firestore";
 
 // Import the functions you need from the SDKs you need
@@ -40,54 +42,53 @@ const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
 
-async function signInWithGoogle() {
+async function signInWithGoogle(setError) {
     try {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
-        const q = query(collection(db, "users"), where("uid", '==', user.uid));
-        const docs = await getDocs(q);
-        if (docs.length === 0) {
-            await addDoc(collection(db, "users"), {
-                uid: user.id,
+        const docsnap = await getDoc(doc(db, "users", user.uid));
+        if (!docsnap.exists()) {
+            await setDoc(doc(db, "users", user.uid), {
+                uid: user.uid,
                 name: user.displayName,
                 authProvider: 'google',
                 email: user.email,
             });
         }
     } catch (e) {
-        console.log(e);
+        setError(e);
     }
 }
 
 
-async function logInWithEmailAndPassword(email, password) {
+async function logInWithEmailAndPassword(email, password, setError) {
     try {
         await signInWithEmailAndPassword(auth, email, password)
     } catch(e) {
-        console.log(e);
+        setError(e);
     }
 }
 
-async function registerWithEmailAndPassword(name, email, password) {
+async function registerWithEmailAndPassword(name, email, password, setError) {
     try {
         const result = await createUserWithEmailAndPassword(auth, email, password);
         const user = result.user;
-        await addDoc(collection(db, 'users'), {
+        await setDoc(doc(db, 'users', user.uid), {
             uid: user.uid,
             name,
             authProvider: 'local',
             email,
         })
     } catch (e) {
-        console.log(e);
+        setError(e);
     }
 }
-async function sendPasswordReset(email) {
+async function sendPasswordReset(email, setError) {
     try {
         await  sendPasswordResetEmail(auth, email);
         // reset sent
     } catch (e) {
-        console.log(e);
+        setError(e);
     }
 }
 

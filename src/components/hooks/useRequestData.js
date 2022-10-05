@@ -32,8 +32,9 @@ function useRequestData() {
         async function getData() {
             try {
                 await delay(2000);
-                const notesData = JSON.parse(localStorage.getItem("notesData")) ?? initailNotesData;
-                setData(notesData);
+                // const notesData = JSON.parse(localStorage.getItem("notesData")) ?? initailNotesData;
+                // setData(notesData);
+                setData(initailNotesData);
             } catch(e) {
                 setError(e);
             } finally {
@@ -49,7 +50,7 @@ function useRequestData() {
 
         try {
             await delay(2000);
-            localStorage.setItem('notesData', JSON.stringify(newData));
+            // localStorage.setItem('notesData', JSON.stringify(newData));
             setData(newData);
             if (doneCallBack) doneCallBack();
         } catch (error) {
@@ -62,7 +63,7 @@ function useRequestData() {
 
         try {
             await delay(2000);
-            localStorage.setItem('notesData', JSON.stringify(newData));
+            // localStorage.setItem('notesData', JSON.stringify(newData));
             setData(newData);
             if (doneCallBack) doneCallBack();
         } catch (error) {

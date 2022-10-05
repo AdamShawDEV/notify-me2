@@ -13,6 +13,7 @@ function Register({ modalOpen, setModalOpen }) {
     const [password2, setPassword2] = useState('');
     const [name, setName] = useState('');
     const [user, loading, error] = useAuthState(auth);
+    const [firebaseError, setFirebaseError] = useState(null);
 
     useEffect(() => {
         if (loading) return;
@@ -31,11 +32,12 @@ function Register({ modalOpen, setModalOpen }) {
         if (password1 !== password2) {
             alert('passwords must match');
         } else {
-            registerWithEmailAndPassword(name, email, password1);
+            registerWithEmailAndPassword(name, email, password1, setFirebaseError);
         }
     }
 
     if (error) throw error;
+    if(firebaseError) throw firebaseError;
 
     return (
         <Modal isOpen={true} handleClose={onClose}>
