@@ -1,43 +1,47 @@
-import noteStyles from './modules/Note.module.css';
-import formStyles from './modules/AddEditNote.module.css';
+import styles from './modules/Reset.module.css';
 import Modal from './Modal';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { auth, sendPasswordReset } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Button from './Button';
+import { MODAL_OPEN } from '../consts';
 
 
-function Reset() {
+function Reset({ modalOpen, setModalOpen }) {
     const [email, setEmail] = useState('');
     const [user, loading, error] = useAuthState(auth);
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (loading) return;
-        if (user) navigate('/');
+        if (user) setModalOpen(MODAL_OPEN.NONE);
+
+        // eslint-disable-next-line
     }, [user, loading]);
 
     function onClose() {
-        navigate('/');
+        setModalOpen(MODAL_OPEN.NONE);
     }
 
     function handleFormSubmit(e) {
         e.preventDefault();
 
         sendPasswordReset(auth, email);
-        navigate('/');
+        setModalOpen(MODAL_OPEN.NONE)
     }
 
+    if (error) throw error;
+
     return (
-        <Modal isOpen={true} handleClose={onClose}>
-            <h1 className={noteStyles.title}>Reset Password</h1>
-            <form className={formStyles.editNoteForm} onSubmit={(e) => handleFormSubmit(e)}>
+        <Modal isOpen={modalOpen === MODAL_OPEN.RESET} handleClose={onClose}>
+            <h1 className={styles.title}>Reset Password</h1>
+            <form className={styles.resetForm} onSubmit={(e) => handleFormSubmit(e)}>
                 <label>enter your e-mail:</label>
-                <input className={formStyles.inputText} type='test' value={email} onChange={(e) => setEmail(e.target.value)} required />
-                <Button>
-                    reset
-                </Button>
+                <input className={styles.inputText} type='test' value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <div className={styles.buttonBox} >
+                    <Button>
+                        reset
+                    </Button>
+                </div>
             </form>
         </Modal>
     );

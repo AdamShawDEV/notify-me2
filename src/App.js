@@ -1,33 +1,33 @@
 import './App.css';
 import { useState } from 'react';
 import Header from './components/Header';
-import Notes from './components/Notes';
+import { DemoNotes, UserNotes } from './components/Notes';
 import { NoteFilterContextProvider } from './components/hooks/NoteFilterContext';
-import { APP_STATE } from './consts';
-import { Routes, Route } from 'react-router-dom';
 import Register from './components/Register';
 import Reset from './components/Reset';
-
-const mainComponents = {
-  [APP_STATE.DEMO]: <Notes />,
-}
+import { MODAL_OPEN } from './consts';
+import LoginForm from './components/LoginForm';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from './firebase';
 
 function App() {
-  const [appState, setAppState] = useState(APP_STATE.DEMO);
+  const [modalOpen, setModalOpen] = useState(MODAL_OPEN.NONE);
+  const [user] = useAuthState(auth);
 
   return (
+    <>
     <div className="App">
       <NoteFilterContextProvider>
-        <Header setAppState={setAppState} />
+        <Header setModalOpen={setModalOpen} />
         <main>
-          <Routes>
-            <Route path='/' element={mainComponents[appState]} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/reset' element={<Reset />} />
-          </Routes>
+          {!user ? <DemoNotes /> : <UserNotes />}
         </main>
       </NoteFilterContextProvider>
     </div >
+    {modalOpen === MODAL_OPEN.LOGIN && <LoginForm modalOpen={modalOpen} setModalOpen={setModalOpen} />}
+    {modalOpen === MODAL_OPEN.RESET && <Reset modalOpen={modalOpen} setModalOpen={setModalOpen} />}
+    {modalOpen === MODAL_OPEN.REGISTER && <Register modalOpen={modalOpen} setModalOpen={setModalOpen} />}
+    </>
   );
 }
 

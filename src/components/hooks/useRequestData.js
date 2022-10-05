@@ -21,15 +21,9 @@ const initailNotesData = [
     },
 ]
 
-const REQUEST_STATUS = {
-    LOADING: 'loading',
-    SUCCESS: 'success',
-    ERROR: 'error',
-}
-
 function useRequestData() {
     const [data, setData] = useState([]);
-    const [requestStatus, setRequestStatus] = useState(REQUEST_STATUS.LOADING);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -40,10 +34,10 @@ function useRequestData() {
                 await delay(2000);
                 const notesData = JSON.parse(localStorage.getItem("notesData")) ?? initailNotesData;
                 setData(notesData);
-                setRequestStatus(REQUEST_STATUS.SUCCESS);
             } catch(e) {
                 setError(e);
-                setRequestStatus(REQUEST_STATUS.ERROR);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -60,7 +54,6 @@ function useRequestData() {
             if (doneCallBack) doneCallBack();
         } catch (error) {
             setError(error);
-            setRequestStatus(REQUEST_STATUS.ERROR);
         }
     }
 
@@ -74,7 +67,6 @@ function useRequestData() {
             if (doneCallBack) doneCallBack();
         } catch (error) {
             setError(error);
-            setRequestStatus(REQUEST_STATUS.ERROR);
         }
     }
 
@@ -88,11 +80,10 @@ function useRequestData() {
             if (doneCallBack) doneCallBack();
         } catch (error) {
             setError(error);
-            setRequestStatus(REQUEST_STATUS.ERROR);
         }
     }
 
-    return { data, requestStatus, error, addRecord, deleteRecord, updateRecord };
+    return { data, loading, error, addRecord, deleteRecord, updateRecord };
 }
 
-export { useRequestData, REQUEST_STATUS };
+export { useRequestData };

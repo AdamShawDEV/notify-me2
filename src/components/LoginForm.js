@@ -3,20 +3,20 @@ import { auth, logInWithEmailAndPassword, signInWithGoogle } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Modal from './Modal';
 import Button from './Button';
-import formStyles from './modules/AddEditNote.module.css';
-import noteStyles from './modules/Note.module.css';
-import { useNavigate } from 'react-router-dom';
+import styles from './modules/Login.module.css';
+import LinkButton from './LinkButton';
+import { MODAL_OPEN } from '../consts';
 
-function LoginForm({ isModalOpen, setIsModalOpen }) {
+function LoginForm({ modalOpen, setModalOpen }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [user, loading, error] = useAuthState(auth);
-    const navigate = useNavigate();
 
     useEffect(() => {
+        if (loading) return;
         if (user) closeForm();
-
-    }, [user]);
+        // eslint-disable-next-line
+    }, [user, loading]);
 
     function handleFormSubmit(e) {
         e.preventDefault();
@@ -26,37 +26,43 @@ function LoginForm({ isModalOpen, setIsModalOpen }) {
 
     function register() {
         closeForm();
-        navigate('/register');
+        setModalOpen(MODAL_OPEN.REGISTER);
     }
 
     function reset() {
         closeForm();
-        navigate('/reset');
+        setModalOpen(MODAL_OPEN.RESET);
     }
 
     function closeForm() {
         setEmail('');
         setPassword('');
-        setIsModalOpen(false);
+        setModalOpen(MODAL_OPEN.NONE);
     }
 
+    if (error) throw error;
+
     return (
-        <Modal isOpen={isModalOpen} handleClose={() => closeForm()}>
-            <h1 className={noteStyles.title}>Please Login</h1>
-            <form className={formStyles.editNoteForm} onSubmit={(e) => handleFormSubmit(e)}>
+        <Modal isOpen={modalOpen === MODAL_OPEN.LOGIN } handleClose={() => closeForm()}>
+            <h1 className={styles.title}>Please Login</h1>
+            <form className={styles.loginForm} onSubmit={(e) => handleFormSubmit(e)}>
                 <label>e-mail:</label>
-                <input className={formStyles.inputText} type='test' value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input className={styles.inputText} type='test' value={email} onChange={(e) => setEmail(e.target.value)} />
                 <label>password</label>
-                <input className={formStyles.inputText} type='text' value={password} onChange={(e) => setPassword(e.target.value)} />
-                <Button>
-                    login
-                </Button>
+                <input className={styles.inputText} type='text' value={password} onChange={(e) => setPassword(e.target.value)} />
+                <div className={styles.buttonBox} >
+                    <Button>
+                        login
+                    </Button>
+                </div>
             </form>
+            <div className={styles.buttonBox} >
                 <Button onClick={signInWithGoogle}>
                     login with google
                 </Button>
-                <Button onClick={reset}>forgot password</Button>
-                <span>No account? <Button onClick={register}>register</Button></span>
+                <LinkButton onClick={reset}>forgot password</LinkButton>
+                <span>No account? <LinkButton onClick={register}>register</LinkButton></span>
+            </div>
         </Modal>
     );
 }

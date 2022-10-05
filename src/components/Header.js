@@ -1,18 +1,17 @@
 import styles from './modules/Header.module.css';
 import logo from './images/logo.png';
-import userImage from './images/user_pic.jpg';
-import { useContext, useState } from 'react';
+// import userImage from './images/user_pic.jpg';
+import { useContext } from 'react';
 import { NoteFilterContext } from './hooks/NoteFilterContext';
 import { RiCloseLine } from 'react-icons/ri';
 import { AiOutlineSearch } from 'react-icons/ai';
 import Button from './Button';
-import LoginForm from './LoginForm';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, logout } from '../firebase';
+import { MODAL_OPEN } from '../consts';
 
-function Header() {
+function Header({ setModalOpen }) {
     const { noteFilter, setNoteFilter } = useContext(NoteFilterContext);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [user] = useAuthState(auth);
 
     return (
@@ -39,12 +38,11 @@ function Header() {
                         <Button onClick={logout}>
                             logout
                         </Button> :
-                        <Button onClick={() => setIsModalOpen(true)}>
+                        <Button onClick={() => setModalOpen(MODAL_OPEN.LOGIN)}>
                             login
                         </Button>}
                 </div>
             </header>
-            <LoginForm isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
         </>
     );
 }

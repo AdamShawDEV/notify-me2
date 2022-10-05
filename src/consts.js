@@ -4,9 +4,11 @@ const PENDING_ACTION = {
     NONE: 'none',
   };
 
-  const APP_STATE = {
-    DEMO: 'demo',
-    USER: 'user',
+  const MODAL_OPEN = {
+    NONE: 'none',
+    LOGIN: 'login',
+    REGISTER: 'register',
+    RESET: 'reset',
   }
 
-  export { PENDING_ACTION, APP_STATE };
+  export { PENDING_ACTION, MODAL_OPEN };
