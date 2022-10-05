@@ -3,7 +3,7 @@ import Portal from "./Portal";
 import { RiCloseLine } from 'react-icons/ri';
 import styles from "./modules/Modal.module.css";
 
-function Modal({ children, heading,  isOpen, handleClose }) {
+function Modal({ children,  isOpen, handleClose }) {
     React.useEffect(() => {
         const closeOnExcapeKey = e => e.key === "Escape" ? handleClose() : null;
         document.body.addEventListener("keydown", closeOnExcapeKey);

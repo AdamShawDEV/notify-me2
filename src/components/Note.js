@@ -16,12 +16,12 @@ function EditButton({ note, updateRecord, pendingAction, setPendingAction }) {
         pendingOperation={pendingAction === PENDING_ACTION.EDIT_ADD}>
         edit
       </Button>
-      <AddEditNote
+      {isModalOpen && <AddEditNote
         note={note}
         setPendingAction={setPendingAction}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        updateRecord={updateRecord} />
+        updateRecord={updateRecord} />}
     </>
   );
 }

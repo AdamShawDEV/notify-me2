@@ -7,7 +7,7 @@ import Button from './Button';
 import { MODAL_OPEN } from '../consts';
 
 
-function Reset({ modalOpen, setModalOpen }) {
+function Reset({ modalOpen, setModalOpen, setToast }) {
     const [email, setEmail] = useState('');
     const [user, loading, error] = useAuthState(auth);
     const [firebaseError, setFirebaseError] = useState(null);
@@ -19,19 +19,49 @@ function Reset({ modalOpen, setModalOpen }) {
         // eslint-disable-next-line
     }, [user, loading]);
 
+    useEffect(() => {
+        if (firebaseError) {
+            let message = '';
+
+            console.log(firebaseError.code);
+
+            switch (firebaseError.code) {
+                case 'auth/invalid-email':
+                    message = 'invalid email address';
+                    break;
+                case 'auth/user-not-found':
+                    message = 'user not found';
+                    break;
+                default:
+                    message = 'error';
+            }
+
+            setToast({
+                display: true,
+                message,
+            });
+            setFirebaseError(null);
+        }
+        // eslint-disable-next-line
+    }, [firebaseError]);
+
     function onClose() {
         setModalOpen(MODAL_OPEN.NONE);
     }
 
-    function handleFormSubmit(e) {
+    async function handleFormSubmit(e) {
         e.preventDefault();
 
-        sendPasswordReset(auth, email, setFirebaseError);
-        setModalOpen(MODAL_OPEN.NONE)
+        if (!await sendPasswordReset(email, setFirebaseError)) {
+            setToast({
+                display: true,
+                message: 'reset email sent',
+            });
+            setModalOpen(MODAL_OPEN.NONE)
+        }
     }
 
     if (error) throw error;
-    if(firebaseError) throw firebaseError;
 
     return (
         <Modal isOpen={modalOpen === MODAL_OPEN.RESET} handleClose={onClose}>

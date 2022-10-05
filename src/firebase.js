@@ -65,13 +65,14 @@ async function logInWithEmailAndPassword(email, password, setError) {
     }
 }
 
-async function registerWithEmailAndPassword(name, email, password, setError) {
+async function registerWithEmailAndPassword(name, email, password, userImage, setError) {
     try {
         const result = await createUserWithEmailAndPassword(auth, email, password);
         const user = result.user;
         await setDoc(doc(db, 'users', user.uid), {
             uid: user.uid,
             name,
+            userImage,
             authProvider: 'local',
             email,
         })
@@ -85,7 +86,9 @@ async function sendPasswordReset(email, setError) {
         // reset sent
     } catch (e) {
         setError(e);
+        return true;
     }
+    return false;
 }
 
 function logout() {

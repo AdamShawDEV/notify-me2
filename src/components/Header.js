@@ -22,12 +22,11 @@ function Header({ setModalOpen }) {
                 const docRef = doc(db, 'users', user.uid);
                 const docSnap = await getDoc(docRef);
                 const userData = docSnap.data();
-                console.log(userData);
                 if (userData.authProvider === 'google') {
                     setUserImage(user.photoURL);
                 } else if (userData.authProvider === 'local') {
                     user.displayName = userData.name;
-                    setUserImage(process.env.PUBLIC_URL + '/images/user_pic.jpg');
+                    setUserImage(process.env.PUBLIC_URL + `/images/${userData.userImage}.png`);
                 }
             } else {
                 setUserImage(null);

@@ -7,7 +7,7 @@ import styles from './modules/Login.module.css';
 import LinkButton from './LinkButton';
 import { MODAL_OPEN } from '../consts';
 
-function LoginForm({ modalOpen, setModalOpen }) {
+function LoginForm({ modalOpen, setModalOpen, setToast }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [user, loading, error] = useAuthState(auth);
@@ -18,6 +18,33 @@ function LoginForm({ modalOpen, setModalOpen }) {
         if (user) closeForm();
         // eslint-disable-next-line
     }, [user, loading]);
+
+    useEffect(() => {
+        if (firebaseError) {
+            let message = '';
+
+            switch (firebaseError.code) {
+                case 'auth/invalid-email':
+                    message = 'invalid email address';
+                    break;
+                case 'auth/user-not-found':
+                    message = 'user not found';
+                    break;
+                case 'auth/wrong-password':
+                    message = 'incorrect password';
+                    break;
+                default:
+                    message = 'error';
+            }
+
+            setToast({
+                display: true,
+                message,
+            });
+        }
+
+        // eslint-disable-next-line
+    }, [firebaseError]);
 
     function handleFormSubmit(e) {
         e.preventDefault();
@@ -42,10 +69,9 @@ function LoginForm({ modalOpen, setModalOpen }) {
     }
 
     if (error) throw error;
-    if (firebaseError) throw firebaseError;
 
     return (
-        <Modal isOpen={modalOpen === MODAL_OPEN.LOGIN } handleClose={() => closeForm()}>
+        <Modal isOpen={modalOpen === MODAL_OPEN.LOGIN} handleClose={() => closeForm()}>
             <h1 className={styles.title}>Please Login</h1>
             <form className={styles.loginForm} onSubmit={(e) => handleFormSubmit(e)}>
                 <label>e-mail:</label>
