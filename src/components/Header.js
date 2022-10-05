@@ -9,7 +9,7 @@ import Button from './Button';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db, logout } from '../firebase';
 import { MODAL_OPEN } from '../consts';
-import { doc, getDoc, where } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 function Header({ setModalOpen }) {
     const { noteFilter, setNoteFilter } = useContext(NoteFilterContext);
@@ -21,8 +21,14 @@ function Header({ setModalOpen }) {
             if (user) {
                 const docRef = doc(db, 'users', user.uid);
                 const docSnap = await getDoc(docRef);
-                console.log(docSnap.data());
-                // setUserImage(user.photoURL);
+                const userData = docSnap.data();
+                console.log(userData);
+                if (userData.authProvider === 'google') {
+                    setUserImage(user.photoURL);
+                } else if (userData.authProvider === 'local') {
+                    user.displayName = userData.name;
+                    setUserImage(process.env.PUBLIC_URL + '/images/user_pic.jpg');
+                }
             } else {
                 setUserImage(null);
             }
@@ -53,7 +59,7 @@ function Header({ setModalOpen }) {
                 <img className={styles.userImage} alt='user pic' src={userImage} /> */}
                     {user ?
                         <button className={styles.userName} onClick={logout}>
-                            {user.displayName}aa
+                            {user.displayName}
                         </button> :
                         <Button onClick={() => setModalOpen(MODAL_OPEN.LOGIN)}>
                             login

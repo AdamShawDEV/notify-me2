@@ -49,9 +49,9 @@ function LoginForm({ modalOpen, setModalOpen }) {
             <h1 className={styles.title}>Please Login</h1>
             <form className={styles.loginForm} onSubmit={(e) => handleFormSubmit(e)}>
                 <label>e-mail:</label>
-                <input className={styles.inputText} type='test' value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input className={styles.inputText} type='test' value={email} onChange={(e) => setEmail(e.target.value)} required />
                 <label>password</label>
-                <input className={styles.inputText} type='text' value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input className={styles.inputText} type='text' value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <div className={styles.buttonBox} >
                     <Button>
                         login
