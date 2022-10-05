@@ -9,6 +9,7 @@ function Portal({ children, wrapperId = "react-portal-id" }) {
         let element = document.getElementById(wrapperId);
 
         if(!element) {
+            // eslint-disable-next-line
             systemCreated = true;
             element = createWrapperAndAppendToBody(wrapperId);
         }

@@ -1,30 +1,31 @@
 .notesContainer {
-    background-color: darkblue;
+    background-color: #f6f6f6ff;
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: .4rem;
-    gap: .4rem;
+    padding: .8rem;
+    gap: .8rem;
     overflow-y: scroll;
 }
 
 .addNewButton {
-    color: rgb(205, 205, 255);
-    font-size: 4rem;
-    background-color: rgb(124, 124, 246);
-    padding: .4rem;
+    background-color: #cacacaff;
+    padding: .8rem;
     border-radius: .5rem;
-    border: 1px solid darkblue;
     text-align: center;
-    height: 14.9rem;
+    word-wrap: break-word;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, .5);
+    border: none;
+    color: rgb(67, 67, 67);
+    font-size: 4rem;
 }
 
 .addNewButton:hover {
-    background-color: rgb(153, 153, 250);
+    background-color: rgb(224, 224, 224);
 }
 
-.loading {
-    font-size: 3rem;
+.addNewButton:active {
+    background-color: rgb(104, 104, 104);
     color: #fff;
 }
 
@@ -62,14 +63,14 @@
 }
 
 .formButtons {
-    width: 5rem;
-    height: 2rem;
+    min-width: 5rem;
     background-color: rgb(174, 173, 255);
     border: none;
     border-radius: .4rem;
     color: rgb(60, 49, 255);
     font-weight: 500;
     font-size: 1.2rem;
+    box-shadow: 5px 5px 10px rgb(153, 153, 250);
 }
 
 .formButtons:hover {
@@ -119,5 +120,54 @@
 
     .addNewButton {
         width: 18.9rem;
+    }
+}
+/* for loading Note */
+
+.noteContainer {
+    background-color: #cacacaff;
+    padding: .8rem;
+    border-radius: .5rem;
+    text-align: center;
+    word-wrap: break-word;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, .5);
+}
+
+.loadingText {
+    min-width: 3rem;
+    height: 1rem;
+    width: 100%;
+    background-color: rgb(164, 164, 164);
+    margin: .4rem 0;
+    border-radius: .4rem;
+}
+
+.contents {
+    background-color: #fff;
+    margin-top: .8rem;
+    height: 10rem;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    padding: .4rem .4rem;
+    box-shadow: inset 3px 3px 5px rgba(0, 0, 0, .5);
+}
+
+.buttonBox {
+    display: flex;
+    justify-content: space-around;
+    padding-top: .8rem;
+}
+
+.loadingButton {
+    min-width: 5rem;
+    padding: .4rem;
+    background-color: rgb(151, 151, 151);
+    border-radius: .4rem;
+    box-shadow: .1rem .1rem .2rem rgba(0, 0, 0, .5);
+}
+
+@media screen and (min-width: 600px) {
+    .noteContainer {
+        width: 18rem;
     }
 }

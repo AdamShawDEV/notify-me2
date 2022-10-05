@@ -3,7 +3,7 @@ import Portal from "./Portal";
 import { RiCloseLine } from 'react-icons/ri';
 import styles from "./modules/Modal.module.css";
 
-function Modal({ children, heading,  isOpen, handleClose }) {
+function Modal({ children,  isOpen, handleClose }) {
     React.useEffect(() => {
         const closeOnExcapeKey = e => e.key === "Escape" ? handleClose() : null;
         document.body.addEventListener("keydown", closeOnExcapeKey);
@@ -27,9 +27,6 @@ function Modal({ children, heading,  isOpen, handleClose }) {
             <div className={styles.darkBG}>
                 <div className={styles.centered}>
                     <div className={styles.modal}>
-                        <div className={styles.modalHeader}>
-                            <h5 className={styles.heading} >{heading}</h5>
-                        </div>
                         <button onClick={handleClick} className={styles.closeBtn}>
                             <RiCloseLine style={{ marginBottom: "-3px" }} />
                         </button>

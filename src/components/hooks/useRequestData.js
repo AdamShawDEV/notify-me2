@@ -4,41 +4,48 @@ const initailNotesData = [
     {
         id: 'lenfk3l3n4jn3',
         title: "Welcome🤩",
-        contents: "This is an example site created for demomostration proposes. ",
+        contents: "This is an example site created for demomostration proposes only. ",
         alignment: 'center',
     },
     {
         id: 'fldshkdjsan4234',
         title: "⚙️Features⚙️",
-        contents: "Key features:\n✨ React.js\n✨ Standard CSS\n✨ Local Storage\n✨ CRUD operations\n✨ Search filter\n✨ Progress indicators",
+        contents: "Key features:\n✨ React.js\n✨ Standard CSS\n✨ Local Storage\n✨ CRUD operations\n✨ Firebase auth\n✨ Firestore\n✨ Search filter\n✨ Progress indicators",
         alignment: 'left',
     },
     {
         id: 'lenfk3l3ern4jn3',
         title: "About",
-        contents: "This site was created using react and standard CSS",
+        contents: "These are the demo notes.\nFeel free to add and delete notes here.\nRefresh page to reset.\nOr login to store your own notes",
         alignment: 'right',
+    },
+    {
+        id: 'dsf90s9f9s-9dfs',
+        title: "Created by😎",
+        contents: "Adam Shaw\n\n✔️website: adamshaw.dev\n✔️github: github.com/AdamShawDEV",
+        alignment: 'left',
     },
 ]
 
-const REQUEST_STATUS = {
-    LOADING: 'loading',
-    SUCCESS: 'success',
-    ERROR: 'error',
-}
-
 function useRequestData() {
     const [data, setData] = useState([]);
-    const [requestStatus, setRequestStatus] = useState(REQUEST_STATUS.LOADING);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     useEffect(() => {
         async function getData() {
-            await delay(2000);
-            const notesData = JSON.parse(localStorage.getItem("notesData")) ?? initailNotesData;
-            setData(notesData);
-            setRequestStatus(REQUEST_STATUS.SUCCESS);
+            try {
+                await delay(2000);
+                // const notesData = JSON.parse(localStorage.getItem("notesData")) ?? initailNotesData;
+                // setData(notesData);
+                setData(initailNotesData);
+            } catch(e) {
+                setError(e);
+            } finally {
+                setLoading(false);
+            }
         }
 
         getData();
@@ -49,11 +56,11 @@ function useRequestData() {
 
         try {
             await delay(2000);
-            localStorage.setItem('notesData', JSON.stringify(newData));
+            // localStorage.setItem('notesData', JSON.stringify(newData));
             setData(newData);
-            if(doneCallBack) doneCallBack();
+            if (doneCallBack) doneCallBack();
         } catch (error) {
-            console.log(`error adding record ${rec}, ${error}`);
+            setError(error);
         }
     }
 
@@ -62,11 +69,11 @@ function useRequestData() {
 
         try {
             await delay(2000);
-            localStorage.setItem('notesData', JSON.stringify(newData));
+            // localStorage.setItem('notesData', JSON.stringify(newData));
             setData(newData);
             if (doneCallBack) doneCallBack();
         } catch (error) {
-            console.log(`error deletin record with id:${id}, ${error}`);
+            setError(error);
         }
     }
 
@@ -75,15 +82,15 @@ function useRequestData() {
 
         try {
             await delay(2000);
-            localStorage.setItem('notesData', JSON.stringify(newData));
+            // localStorage.setItem('notesData', JSON.stringify(newData));
             setData(newData);
             if (doneCallBack) doneCallBack();
         } catch (error) {
-            console.log(`An Error occurred while updating record ${rec}, ${error}`);
+            setError(error);
         }
     }
 
-    return { data, requestStatus, addRecord, deleteRecord, updateRecord };
+    return { data, loading, error, addRecord, deleteRecord, updateRecord };
 }
 
-export { useRequestData, REQUEST_STATUS };
+export { useRequestData };

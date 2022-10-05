@@ -1,9 +1,10 @@
 .header {
+    position: relative;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .5);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    background-color: rgb(104, 99, 254);
-    border-bottom: 1px solid rgb(0, 0, 101);
+    background-color: #979797ff;
 }
 
 .userContainer {
@@ -13,9 +14,16 @@
 }
 
 .userName {
+    cursor: pointer;
     font-size: 1.5rem;
     font-weight: 600;
     margin-right: .4rem;
+    background: none;
+    border: none;
+}
+
+.userName:hover {
+    color: #4b4bf9ff;
 }
 
 .userImage {
@@ -25,21 +33,34 @@
 
 .filterContainer {
     align-self: center;
-    flex-grow: 1;
     order: 1;
     margin: .4rem;
     text-align: center;
+    width: 100%;
 }
 
 .filterBox {
     width: 25rem;
     height: 1.6rem;
-    background-color: rgb(174, 173, 255);
-    color: rgb(60, 49, 255);
+    background-color: #fff;
+    color: #383838ff;
     font-size: 1.2rem;
-    border: none;
+    border: solid 2px #c5c5c5ff;
     border-radius: .4rem;
     padding-left: 2.2rem;
+}
+
+.filterBox::placeholder{
+    color: #5f5f5dff;
+}
+
+.filterBox:hover {
+    border-color: #6a6a6aff;
+}
+
+.filterBox:focus {
+    outline: none;
+    border-color: #2d2afbff;
 }
 
 .filterButtonContainer {
@@ -52,7 +73,7 @@
 .clearButton {
     position: absolute;
     font-size: 1.5rem;
-    color: #fff;
+    color: #696969ff;
     right: .2rem;
     top: .1rem;
     border: none;
@@ -63,17 +84,17 @@
     color: #000;
 }
 
-@media screen and (max-width: 745px) {
+@media screen and (max-width: 800px) {
     .filterBox {
         width: 15rem;
     }
 }
 
-@media screen and (min-width: 597px) {
+@media screen and (min-width: 670px) {
     .filterContainer {
         order: 0;
-        margin: 0;
         flex-grow: 0;
+        width: fit-content;
     }
 
 }
